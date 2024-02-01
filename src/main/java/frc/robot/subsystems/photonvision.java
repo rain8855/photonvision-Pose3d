@@ -44,13 +44,14 @@ public class photonvision extends SubsystemBase {
     private PhotonCamera camera = new PhotonCamera("limelight");
     
     private PhotonPipelineResult result = camera.getLatestResult();
+
     public boolean hasTargets = result.hasTargets();
     
-    Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0));
+    Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0.0, 0.22), new Rotation3d(0,0,0));
     private AprilTagFieldLayout aprilTagFieldLayout;
     private PhotonPoseEstimator photonPoseEstimator;
     
-    private Pose2d pose2d = new Pose2d(15.481, 1.003, new Rotation2d(180));
+    private Pose2d pose2d = new Pose2d(15.481, 1.003, new Rotation2d(-180));
 
     private final Field2d m_field = new Field2d();
 
@@ -99,24 +100,35 @@ public class photonvision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+
+    // System.out.println("periodic");
+    pose2d = new Pose2d(15.481, 1.003, new Rotation2d(-180));
     PhotonPipelineResult result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
     SmartDashboard.putBoolean("hastarget", hasTargets);
     Optional<EstimatedRobotPose> pose = getEstimatedGlobalPose(pose2d);
+    System.out.println(pose2d);
     
     if(!pose.isEmpty()) {
       pose2d = pose.get().estimatedPose.toPose2d();
+    
       getPose2d = true;
-      System.out.println("getPose2d");
+      // System.out.println("getPose2d");
     }
     else{
-      System.out.println("NOgetPose2d");
+      // System.out.println("NOgetPose2d");
     }
-    SmartDashboard.putBoolean("getPose2d", getPose2d);
-    // m_field.setRobotPose(pose2d);
+    // SmartDashboard.putBoolean("getPose2d", getPose2d);
+    m_field.setRobotPose(pose2d);
+    System.out.println(pose2d);
 
+    // !!!!!! if(hasTargets = true){
+    //   target = result.getBestTarget();
+
+    // }
+    
   }
+  
 
   @Override
   public void simulationPeriodic() {

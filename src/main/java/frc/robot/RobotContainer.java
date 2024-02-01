@@ -38,7 +38,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     mchassis.setDefaultCommand(
-      new RunCommand(() ->mchassis.drive(joystick.getLeftY()*0.4, joystick.getRightX()*0.4), mchassis));
+      new RunCommand(() ->mchassis.drive(joystick.getLeftY()*0.2, joystick.getRightX()*0.2), mchassis));
   }
 
   /**
@@ -51,9 +51,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
-
-    
   }
 
   /**
