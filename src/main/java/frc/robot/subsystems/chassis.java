@@ -28,8 +28,8 @@ public class chassis extends SubsystemBase {
         RL.restoreFactoryDefaults();
         RR.restoreFactoryDefaults();
 
-        FL.setInverted(false);
-        FR.setInverted(false);
+        FL.setInverted(true);
+        FR.setInverted(true);
 
         RL.follow(FL);
         RR.follow(FR);
@@ -40,7 +40,7 @@ public class chassis extends SubsystemBase {
         RR.setIdleMode(IdleMode.kBrake);
     }
     public void drive(double X, double Y){
-        tank.arcadeDrive(-X, -Y);
+        tank.arcadeDrive(-Y,-X);
     }
 
 
