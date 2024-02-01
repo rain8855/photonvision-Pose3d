@@ -35,13 +35,15 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private AprilTagFieldLayout aprilTagFieldLayout;
-  private PhotonCamera cam = new PhotonCamera("limelight");
-  Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-  private Pose2d pose2d = new Pose2d(15.481, 1.003,new Rotation2d(0));
+  
+  // private AprilTagFieldLayout aprilTagFieldLayout;
+  // private PhotonCamera camera = new PhotonCamera("limelight");
+  // Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+  // private Pose2d pose2d = new Pose2d(15.481, 1.003,new Rotation2d(0));
 
   // Construct PhotonPoseEstimator
-  PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam, robotToCam);
+
+  // PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -52,12 +54,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    try {
-      aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    
+    // try {
+    //   aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+    // } catch (IOException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
 
   }
 
@@ -74,10 +77,13 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    
     CommandScheduler.getInstance().run();
-    PhotonPipelineResult result = cam.getLatestResult();
-    boolean hasTargets = result.hasTargets();
-    SmartDashboard.putBoolean("hastarget", hasTargets);
+
+
+    // PhotonPipelineResult result = camera.getLatestResult();
+    // boolean hasTargets = result.hasTargets();
+    // SmartDashboard.putBoolean("hastarget", hasTargets);
     
     // Optional<EstimatedRobotPose> pose = getEstimatedGlobalPose(pose2d);
     // if(!pose.isEmpty()) {

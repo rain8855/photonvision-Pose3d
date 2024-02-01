@@ -5,5 +5,5 @@
   "maxAcceleration": 0.2,
   "trackWidth": 0.5,
   "gameName": "Crescendo",
-  "outputDir": "../src/main/deploy"
+  "outputDir": ".."
 }
