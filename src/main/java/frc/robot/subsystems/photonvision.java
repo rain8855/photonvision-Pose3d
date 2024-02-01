@@ -99,7 +99,7 @@ public class photonvision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("periodic");
+    
     PhotonPipelineResult result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
     SmartDashboard.putBoolean("hastarget", hasTargets);
