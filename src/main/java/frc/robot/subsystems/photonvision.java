@@ -50,8 +50,8 @@ public class photonvision extends SubsystemBase {
     PhotonTrackedTarget target = result.getBestTarget();
     
     Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0));
-    private AprilTagFieldLayout aprilTagFieldLayout;
-    private PhotonPoseEstimator photonPoseEstimator;
+    public AprilTagFieldLayout aprilTagFieldLayout;
+    public PhotonPoseEstimator photonPoseEstimator;
     
     private Pose2d pose2d = new Pose2d(15.481, 1.003, new Rotation2d(180));
 
