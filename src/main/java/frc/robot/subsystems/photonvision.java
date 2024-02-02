@@ -49,16 +49,12 @@ public class photonvision extends SubsystemBase {
     public boolean hasTargets = result.hasTargets();
     PhotonTrackedTarget target = result.getBestTarget();
     
-    Transform3d robotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.0), new Rotation3d(0,0,0));
-    private Pose2d pose2d = new Pose2d(15.445, 1.448, new Rotation2d(-180));
-    private Pose3d robotpose3d = new Pose3d();
-    Transform3d bestCameraToTarget = target.getBestCameraToTarget();
-
+    Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0));
     private AprilTagFieldLayout aprilTagFieldLayout;
     private PhotonPoseEstimator photonPoseEstimator;
+    
+    private Pose2d pose2d = new Pose2d(15.481, 1.003, new Rotation2d(180));
 
-    
-    
     private final Field2d m_field = new Field2d();
 
     private boolean loadSuccess;
@@ -106,9 +102,7 @@ public class photonvision extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    // System.out.println("periodic");
-    // pose2d = new Pose2d(15.481, 1.003, new Rotation2d(-180));
+    
     PhotonPipelineResult result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
     SmartDashboard.putBoolean("hastarget", hasTargets);
