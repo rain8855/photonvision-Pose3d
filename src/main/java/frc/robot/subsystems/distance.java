@@ -64,12 +64,10 @@ public class distance extends SubsystemBase{
         //                                             , gyro.getRotation2d(), targetPose, cameraToRobot);
         // Calculate robot's field relative pose
 
-        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, tagPose.get(), camToRobot);
-
-
 
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget()
                         , aprilTagFieldLayout.getTagPose(target.getFiducialId()), cameraToRobot);
+        
         double robotPoseX = robotPose.toPose2d().getX();
         double robotPoseY = robotPose.toPose2d().getY();
         double [] robotPose_XY = {robotPoseX,robotPoseY};
