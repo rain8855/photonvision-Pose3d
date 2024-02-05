@@ -123,7 +123,6 @@ public class photonvision extends SubsystemBase {
     }
     System.out.println("Pose is null");
     return new Pose2d();
-  
   }
 
   // public static void subsystem(String[] args){
