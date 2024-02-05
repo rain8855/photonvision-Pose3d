@@ -38,27 +38,31 @@ import org.photonvision.targeting.TargetCorner;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 
 public class photonvision extends SubsystemBase {
+
     private PhotonCamera camera = new PhotonCamera("limelight");
     
     private PhotonPipelineResult result = camera.getLatestResult();
 
-    public boolean hasTargets = result.hasTargets();
-    PhotonTrackedTarget target = result.getBestTarget();
-    
+    public boolean hasTargets;
+    PhotonTrackedTarget target;
+
+    Transform3d cameraToRobot = new Transform3d(0, 0, 0, new Rotation3d(0, 0, 0));
     Transform3d robotToCam = new Transform3d(new Translation3d(0.42, 0, 0.22), new Rotation3d(0,0,0));
+
     public AprilTagFieldLayout aprilTagFieldLayout;
     public PhotonPoseEstimator photonPoseEstimator;
     
-    private Pose2d pose2d = new Pose2d(15.481, 1.003, new Rotation2d(180));
+    private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(180));
+    private Pose3d robotPose;
 
     private final Field2d m_field = new Field2d();
 
     private boolean loadSuccess;
-    private boolean getPose2d;
     /**
    * Example command factory method.
    *
@@ -68,8 +72,7 @@ public class photonvision extends SubsystemBase {
     
     try {
       aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-      // photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
-
+    
       loadSuccess = true;
     } catch (IOException e) {
       e.printStackTrace();
@@ -100,27 +103,56 @@ public class photonvision extends SubsystemBase {
   //   return false;
   // }
 
+  public Pose2d getPose(){
+    result = camera.getLatestResult();
+    target = result.getBestTarget();
+  
+    if (target != null){
+      Transform3d camerToTarget = target.getBestCameraToTarget();
+
+      Optional<Pose3d> TagPose = aprilTagFieldLayout.getTagPose(target.getFiducialId());
+      
+      if(TagPose.isPresent()){
+        robotPose = PhotonUtils.estimateFieldToRobotAprilTag(camerToTarget, TagPose.get(), cameraToRobot);
+      }
+      else {
+        robotPose = new Pose3d();
+      }
+      System.out.println("Pose get");
+      return robotPose.toPose2d();
+    }
+    System.out.println("Pose is null");
+    return new Pose2d();
+  
+  }
+
+  // public static void subsystem(String[] args){
+  //   System.out.println("fuck you");
+  // }
+  
+
   @Override
   public void periodic() {
     
     PhotonPipelineResult result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
     SmartDashboard.putBoolean("hastarget", hasTargets);
-    Optional<EstimatedRobotPose> pose = getEstimatedGlobalPose(pose2d);
-    System.out.println(pose2d);
+
+    m_field.setRobotPose(getPose());
     
-    if(!pose.isEmpty()) {
-      pose2d = pose.get().estimatedPose.toPose2d();
+    SmartDashboard.putData("m_field", m_field);
     
-      getPose2d = true;
+    // if(!pose.isEmpty()) {
+      // pose2d = pose.get().estimatedPose.toPose2d();
+    
+      // getPose2d = true;
       // System.out.println("getPose2d");
-    }
-    else{
+    // }
+    // else{
       // System.out.println("NOgetPose2d");
-    }
+    // }
     // SmartDashboard.putBoolean("getPose2d", getPose2d);
-    m_field.setRobotPose(pose2d);
-    System.out.println(pose2d);
+
 
     // !!!!!! if(hasTargets = true){
     //   target = result.getBestTarget();
